@@ -34,7 +34,7 @@ def main():
     # create the ground cover
     for i in range(constants.COLS):
         for j in range(constants.ROWS):
-            position = Point(i,j+2)
+            position = Point(i,j+constants.BANNER_HEIGHT)
             position = position.scale(constants.CELL_SIZE)
             cast.add_actor("ground_covers", Ground_Cover(position))
 
