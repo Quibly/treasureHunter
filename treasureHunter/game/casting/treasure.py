@@ -1,4 +1,8 @@
 from game.casting.actor import Actor
+import constants
+from game.shared.point import Point
+from game.casting.cast import Cast
+import random
 
 
 class Treasure(Actor):
@@ -19,6 +23,7 @@ class Treasure(Actor):
         super().__init__()
         self._message = ""
         self._value = int(1)
+        self._prepare_treasure()
                 
     def get_message(self):
         """Gets the treasure's message.
@@ -52,6 +57,30 @@ class Treasure(Actor):
             _value(integer): The given value.
         """
         self._value = int(value)
+
+    def _prepare_treasure(self):
+        """
+        """
+        with open(constants.DATA_PATH) as file:
+            data = file.read()
+            messages = data.splitlines()
+
+        cast = Cast()   
+        treasures = cast.get_actors("treasures")
+
+        text = "X"
+        message = messages[len(treasures)]
+
+        x = random.randint(1, constants.COLS - 1)
+        y = random.randint(1, constants.ROWS - 1)
+        position = Point(x, y)
+        position = position.scale(constants.CELL_SIZE)
         
+        self.set_text(text)
+        self.set_font_size(constants.FONT_SIZE)
+        self.set_color(constants.BLACK)
+        self.set_position(position)
+        self.set_message(message)
+        self.set_value(constants.TREASURE_VALUE)
 
         

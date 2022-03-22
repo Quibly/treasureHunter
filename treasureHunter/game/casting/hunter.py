@@ -1,4 +1,6 @@
 from game.casting.actor import Actor
+import constants
+from game.shared.point import Point
 
 class Hunter(Actor):
     """
@@ -15,6 +17,7 @@ class Hunter(Actor):
         """
         super().__init__()
         self._health = 100
+        self._prepare_hunter()
 
     def get_health(self):
         """Returns the damage amount of the trap.
@@ -32,3 +35,16 @@ class Hunter(Actor):
         """
         health = self._health
         self._health = int(change) + health
+
+    def _prepare_hunter(self):
+        """
+        """
+        x = int(constants.MAX_X / 4)
+        y = int(constants.MAX_Y - constants.CELL_SIZE)
+        position = Point(x, y)
+        text = "#"
+        self.set_text(text)
+        self.set_font_size(constants.FONT_SIZE)
+        self.set_color(constants.POWDER_BLUE)
+        self.set_position(position)
+
