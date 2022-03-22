@@ -1,6 +1,4 @@
 import constants
-import random
-
 from game.casting.actor import Actor
 from game.casting.ground_cover import Ground_Cover
 from game.casting.treasure import Treasure
@@ -8,11 +6,8 @@ from game.casting.trap import Trap
 from game.casting.hunter import Hunter
 from game.casting.cast import Cast
 from game.directing.director import Director
-
 from game.services.keyboard_service import KeyboardService
 from game.services.video_service import VideoService
-
-from game.shared.color import Color
 from game.shared.point import Point
 
 
