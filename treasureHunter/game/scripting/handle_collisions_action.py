@@ -114,43 +114,4 @@ class HandleCollisionsAction(Action):
         Args:
             cast (Cast): The cast of Actors in the game.
         """
-        # if self._is_game_over:
-        #     cycle = cast.get_first_actor("cycle")
-        #     segments = cycle.get_segments()
-        #     score = cast.get_first_actor("score")
-        #     cycle2 = cast.get_first_actor("cycle2")
-        #     segments2 = cycle2.get_segments()
-        #     score2 = cast.get_first_actor("score2")
-
-        #     if score._points == score2._points:
-        #         score.set_color(constants.ORANGE)
-        #         score2.set_color(constants.ORANGE)
-        #         score.set_text(f"Player One: Loser")
-        #         score2.set_text(f"Player Two: Loser")
-        #     elif score._points != 0:
-        #         score.set_color(constants.ORANGE)
-        #         score2.set_color(constants.ORANGE)
-        #         score.set_text(f"Player One: Winner")
-        #         score2.set_text(f"Player Two: Loser")
-        #     elif score2._points != 0:
-        #         score.set_color(constants.ORANGE)
-        #         score2.set_color(constants.ORANGE)
-        #         score.set_text(f"Player One: Loser")
-        #         score2.set_text(f"Player Two: Winner")
-
-        #     x = int(constants.MAX_X / 2)
-        #     y = int(constants.MAX_Y / 2)
-        #     position = Point(x, y)
-
-        #     message = Actor()
-        #     message.set_text(f"Game Over!")
-        #     message.set_position(position)
-        #     message.set_color(constants.ORANGE)
-        #     cast.add_actor("messages", message)
-
-            # segments[0].set_color(constants.WHITE)
-            # for segment in segments:
-            #     segment.set_color(constants.WHITE)
-            # segments2[0].set_color(constants.WHITE)
-            # for segment2 in segments2:
-            #     segment2.set_color(constants.WHITE)
+       
