@@ -9,6 +9,11 @@ from game.directing.director import Director
 from game.services.keyboard_service import KeyboardService
 from game.services.video_service import VideoService
 from game.shared.point import Point
+from game.scripting.script import Script
+from game.scripting.control_hunter_action import ControlHunterAction
+from game.scripting.move_hunter_action import MoveHunterAction
+from game.scripting.handle_collisions_action import HandleCollisionsAction
+from game.scripting.draw_actors_action import DrawActorsAction
 
 
 def main():
@@ -50,8 +55,15 @@ def main():
     # start the game
     keyboard_service = KeyboardService(constants.CELL_SIZE)
     video_service = VideoService(constants.CAPTION, constants.MAX_X, constants.MAX_Y, constants.CELL_SIZE, constants.FRAME_RATE)
+
+    script = Script()
+    script.add_action("input", ControlHunterAction(keyboard_service))
+    script.add_action("update", MoveHunterAction(video_service))
+    script.add_action("update", HandleCollisionsAction())
+    script.add_action("output", DrawActorsAction(video_service))
+
     director = Director(keyboard_service, video_service)
-    director.start_game(cast)
+    director.start_game(cast, script)
 
 
 if __name__ == "__main__":
