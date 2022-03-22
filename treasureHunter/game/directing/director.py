@@ -1,6 +1,4 @@
-import datetime
-import random
-from game.shared.point import Point
+from game.shared.color import Color
 
 class Director:
     """A person who directs the game.
@@ -24,7 +22,7 @@ class Director:
         self._video_service = video_service
         self._current_score = int(0)
 
-    def start_game(self, cast, cols, rows, cell_size, difficulty, Color):
+    def start_game(self, cast):
         """Starts the game using the given cast. Runs the main game loop.
 
         Args:
@@ -33,7 +31,7 @@ class Director:
         self._video_service.open_window()
         while self._video_service.is_window_open():
             self._get_inputs(cast)
-            self._do_updates(cast, cols, rows, cell_size, difficulty, Color)
+            self._do_updates(cast)
             self._do_outputs(cast)
         self._video_service.close_window()
 
@@ -43,11 +41,12 @@ class Director:
         Args:
             cast (Cast): The cast of actors.
         """
-        robot = cast.get_first_actor("robots")
+        hunters = cast.get_actors("hunters")
         velocity = self._keyboard_service.get_direction()
-        robot.set_velocity(velocity)
+        for hunter in hunters:
+            hunter.set_velocity(velocity)
 
-    def _do_updates(self, cast, cols, rows, cell_size, difficulty, Color):
+    def _do_updates(self, cast):
         """Updates the robot's position, the artifact positions, and resolves any collisions with artifacts.
            Allows user to pick the level of difficulty in the program.
         
@@ -57,60 +56,59 @@ class Director:
             cell_size: The CELL_SIZE specified in __main__
             difficulty: The difficulty selected in __main__ starting
         """
-        #This IF/ELIF statement is used for difficulty settings to adjust speed of artifacts
-        timeDelay = 1
-        if difficulty == 2:
-            timeDelay = .5
-        elif difficulty == 3:
-            timeDelay = .1
-
-        x = random.randint(1, cols - 1)
-        aPosition = Point(x, 0)
-        aPosition = aPosition.scale(cell_size)
 
         banner = cast.get_first_actor("banners")
-        robot = cast.get_first_actor("robots")
-        artifacts = cast.get_actors("artifacts")
-        currentTime = datetime.datetime.now()
-        currentTimeStamp = currentTime.timestamp()
+        hunters = cast.get_actors("hunters")
+        treasures = cast.get_actors("treasures")
+        ground_covers = cast.get_actors("ground_covers")
+        traps = cast.get_actors("traps")
 
         banner.set_text(f"Score: {self._current_score}")
         max_x = self._video_service.get_width()
         max_y = self._video_service.get_height()
-        robot.move_next(max_x,max_y)
-                
-        for artifact in artifacts:
-            x = random.randint(1, cols - 1)
-            aPosition = Point(x, 0)
-            aPosition = aPosition.scale(cell_size)
-            if artifact.get_display() == 0:
-                r = random.randint(0, 255)
-                g = random.randint(0, 255)
-                b = random.randint(0, 255)
-                color = Color(r, g, b)
-                artifact.set_color(color)
-                artifact.set_display(1)
-                if artifact.get_text() == '*':
-                    artifact.set_message(+1)
-                else:
-                    artifact.set_message(-1)
-            if robot.get_position().equals(artifact.get_position()):
-                message = artifact.get_message()
-                self._current_score += message
-                banner.set_text(f"Score: {self._current_score}")
-                artifact.set_position(aPosition)
-                # Works with timeDelay settings for difficulty settings
-            if (currentTimeStamp - artifact.get_last_mod()) > timeDelay:
-                aDirection = Point(0, cell_size)
-                artifact.set_velocity(aDirection)
-                artifact.move_next(max_x, max_y)
-                artifact.set_last_mod()
-                display = artifact.get_display()
-                new_display = display + 1
-                artifact.set_display(new_display)
-                if artifact.get_position().get_y() == 0:
-                    artifact.set_position(aPosition)
-                    
+        for hunter in hunters:
+            hunter.move_next(max_x,max_y)
+        message_counter = 0
+
+        #check for ground cover collisions
+        for i in ground_covers:
+            for hunter in hunters:
+                #remove ground_cover when collisions are found
+                if i.get_position().equals(hunter.get_position()):
+                    i.set_display_toggle(0)
+            if i.get_display_toggle() == 0:
+                cast.remove_actor("ground_covers", i)
+
+        #check for treasure collissions
+        for j in treasures:
+            for hunter in hunters:
+                #show treasure and increase score of hunter if collision is found
+                if j.get_position().equals(hunter.get_position()):
+                    color = Color(255, 255, 255)
+                    j.set_color(color)
+                    message = j.get_message()
+                    banner.set_text(message)
+                    self._current_score += 1
+                    j.set_value(0)
+                    message_counter += 1
+        
+        #check for trap collissions
+        for k in traps:
+            for hunter in hunters:
+                #show trap and decrease hunter health if collision is found
+                if k.get_position().equals(hunter.get_position()):
+                    color = Color(255, 0, 0)
+                    k.set_color(color)
+                    if k.get_damage != 0:
+                        banner.set_text('You took damage from a trap')
+                        k.set_damage(0)
+                        message_counter += 1
+                    elif k.get_damage == 0:
+                        banner.set_text('This trap has been activated already')
+                        message_counter += 1
+
+        if message_counter == 0:
+            banner.set_text('')                  
 
 
     def _do_outputs(self, cast):
