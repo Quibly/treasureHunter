@@ -4,6 +4,7 @@ from game.casting.ground_cover import Ground_Cover
 from game.casting.treasure import Treasure
 from game.casting.trap import Trap
 from game.casting.hunter import Hunter
+from game.casting.health import Health
 from game.casting.score import Score
 from game.casting.cast import Cast
 from game.directing.director import Director
@@ -52,8 +53,11 @@ def main():
     for n in range(constants.DEFAULT_TRAPS):
         cast.add_actor("traps", Trap())
 
-    #create score
+    #create score UI
     cast.add_actor("score", Score())
+
+    #create health Ui
+    cast.add_actor("health", Health())
                 
     
     # start the game
