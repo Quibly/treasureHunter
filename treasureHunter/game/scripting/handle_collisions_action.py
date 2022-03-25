@@ -1,5 +1,6 @@
 import constants
 from game.casting.actor import Actor
+from game.casting.hunter import Hunter
 from game.scripting.action import Action
 from game.shared.point import Point
 from game.shared.color import Color
@@ -100,7 +101,9 @@ class HandleCollisionsAction(Action):
                     k.set_color(color)
                     if k.get_damage != 0:
                         banner.set_text('You took damage from a trap')
-                        k.set_damage(0)
+                        k.set_damage(50)
+                        if Hunter.health == 0:
+                            self._is_game_over = True
                         self._message_counter += 1
                     elif k.get_damage == 0:
                         banner.set_text('This trap has been activated already')
@@ -114,4 +117,13 @@ class HandleCollisionsAction(Action):
         Args:
             cast (Cast): The cast of Actors in the game.
         """
-       
+
+        if self._is_game_over:
+            hunter = cast.get_first_actor("Hunter")
+            score = cast.get_first_actor("score")
+
+
+
+            message = Actor()
+            message.set_text(f"Game Over!")
+            cast.add_actor("messages", message)

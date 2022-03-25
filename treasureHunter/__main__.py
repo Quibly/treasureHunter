@@ -4,6 +4,7 @@ from game.casting.ground_cover import Ground_Cover
 from game.casting.treasure import Treasure
 from game.casting.trap import Trap
 from game.casting.hunter import Hunter
+from game.casting.score import Score
 from game.casting.cast import Cast
 from game.directing.director import Director
 from game.services.keyboard_service import KeyboardService
@@ -50,6 +51,9 @@ def main():
     # create the traps
     for n in range(constants.DEFAULT_TRAPS):
         cast.add_actor("traps", Trap())
+
+    #create score
+    cast.add_actor("score", Score())
                 
     
     # start the game
