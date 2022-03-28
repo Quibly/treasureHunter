@@ -17,7 +17,7 @@ class Trap(Actor):
         Holds the damage amount from the trap
         """
         super().__init__()
-        self._damage = -50
+        self._damage = 50
         self._prepare_trap()
 
     def get_damage(self):
@@ -51,4 +51,3 @@ class Trap(Actor):
         self.set_color(constants.BLACK)
         self.set_position(position)
         self.set_damage(constants.TRAP_DAMAGE)
-
