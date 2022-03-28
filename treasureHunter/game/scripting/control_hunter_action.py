@@ -1,6 +1,5 @@
-import constants
 from game.scripting.action import Action
-from game.shared.point import Point
+
 
 
 class ControlHunterAction(Action):
@@ -27,7 +26,12 @@ class ControlHunterAction(Action):
         Args:
             cast (Cast): The cast of actors.
         """
+        
         hunters = cast.get_actors("hunters")
-        velocity = self._keyboard_service.get_direction()
+        velocity1 = self._keyboard_service.get_direction1()
+        velocity2 = self._keyboard_service.get_direction2()
         for hunter in hunters:
-            hunter.set_velocity(velocity)
+            if hunter.get_player_number() == 1:
+                hunter.set_velocity(velocity1)
+            elif hunter.get_player_number() == 2:
+                hunter.set_velocity(velocity2)
