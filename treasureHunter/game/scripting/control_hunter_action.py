@@ -4,9 +4,9 @@ from game.scripting.action import Action
 
 class ControlHunterAction(Action):
     """
-    An input action that controls the cycle.
+    An input action that controls the hunter.
     
-    The responsibility of ControlActorsAction is to get the direction and move the cycle's direction.
+    The responsibility of ControlActorsAction is to get the direction and move the hunter's direction.
 
     Attributes:
         _keyboard_service (KeyboardService): An instance of KeyboardService.
