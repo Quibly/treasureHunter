@@ -43,7 +43,7 @@ class KeyboardService:
         
         return direction
 
-def get_direction2(self):
+    def get_direction2(self):
         """Gets the selected direction (left or right) based on the currently pressed keys.
         Returns:
             Point: The selected direction.
