@@ -4,8 +4,7 @@ from game.casting.ground_cover import Ground_Cover
 from game.casting.treasure import Treasure
 from game.casting.trap import Trap
 from game.casting.hunter import Hunter
-from game.casting.health import Health
-from game.casting.score import Score
+from game.casting.banner import Banner
 from game.casting.cast import Cast
 from game.directing.director import Director
 from game.services.keyboard_service import KeyboardService
@@ -26,17 +25,9 @@ def main():
     # create the cast
     cast = Cast()
     
-    # create the banner
-    banner = Actor()
-    banner.set_text("")
-    banner.set_font_size(constants.FONT_SIZE)
-    banner.set_color(constants.WHITE)
-    banner.set_position(Point(constants.CELL_SIZE, 0))
-    cast.add_actor("banners", banner)
-    
     # create the hunter(s)
     for i in range(constants.HUNTERS):
-        cast.add_actor("hunters", Hunter())
+        cast.add_actor("hunters", Hunter(i+1))
 
     # create the ground cover
     for i in range(constants.COLS):
@@ -53,11 +44,8 @@ def main():
     for n in range(constants.DEFAULT_TRAPS):
         cast.add_actor("traps", Trap())
 
-    #create score UI
-    cast.add_actor("score", Score())
-
-    #create health Ui
-    cast.add_actor("health", Health())
+    # create the banner
+    cast.add_actor("banners", Banner())
                 
     
     # start the game
