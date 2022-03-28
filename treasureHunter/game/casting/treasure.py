@@ -82,5 +82,3 @@ class Treasure(Actor):
         self.set_position(position)
         self.set_message(message)
         self.set_value(constants.TREASURE_VALUE)
-
-        
