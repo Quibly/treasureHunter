@@ -1,9 +1,10 @@
 import constants
 from game.casting.actor import Actor
-from game.casting.hunter import Hunter
 from game.scripting.action import Action
 from game.shared.point import Point
 from game.shared.color import Color
+from constants import DEFAULT_TREASURES
+from constants import WHITE
 
 class HandleCollisionsAction(Action):
     """
@@ -19,8 +20,8 @@ class HandleCollisionsAction(Action):
     def __init__(self):
         """Constructs a new HandleCollisionsAction."""
         self._is_game_over = False
-        self._current_score = 0
         self._message_counter = 0
+        self._treasures_found = 0
 
     def execute(self, cast, script):
         """Executes the handle collisions action.
@@ -38,7 +39,13 @@ class HandleCollisionsAction(Action):
             self._handle_trap_collision(cast)
             self._handle_game_over(cast)
             if self._message_counter == 0:
-                banner.set_text('')
+                banner.set_message('')
+                banner.display_banner()
+
+    def get_game_over(self):
+        """
+        """
+        return self._is_game_over
     
     def _handle_ground_cover_collision(self, cast):
         """Updates the score and if a player collides with a light trail.
@@ -68,20 +75,29 @@ class HandleCollisionsAction(Action):
         hunters = cast.get_actors("hunters")
         banner = cast.get_first_actor("banners")
         treasures = cast.get_actors("treasures")
-        score = cast.get_first_actor("score")
 
 
-        for j in treasures:
+        for treasure in treasures:
             for hunter in hunters:
                 #show treasure and increase score of hunter if collision is found
-                if j.get_position().equals(hunter.get_position()):
+                if treasure.get_position().equals(hunter.get_position()):
                     color = Color(255, 255, 255)
-                    j.set_color(color)
-                    message = j.get_message()
-                    banner.set_text(message)
-                    self._current_score += 1
-                    score.add_points(self._current_score)
+                    treasure.set_color(color)
+                    message = treasure.get_message()
+                    points = treasure.get_value()
+                    banner.set_message(message)
+                    #check for player number and assign points gain to appropriate player
+                    if hunter.get_player_number() == 1:
+                        banner.set_treasure_gain1(points)
+                    elif hunter.get_player_number() ==2:
+                        banner.set_treasure_gain2(points)
+                    if treasure.get_value() != 0:
+                        self._treasures_found += 1
+                    banner.display_banner()
+                    #set treasure value to 0 for additional collisions
+                    treasure.set_value(0)
                     self._message_counter += 1
+                    
 
 
     def _handle_trap_collision(self, cast):
@@ -93,22 +109,26 @@ class HandleCollisionsAction(Action):
         hunters = cast.get_actors("hunters")
         banner = cast.get_first_actor("banners")
         traps = cast.get_actors("traps")
-        health = cast.get_first_actor("health")
 
-        for k in traps:
+        for trap in traps:
             for hunter in hunters:
                 #show trap and decrease hunter health if collision is found
-                if k.get_position().equals(hunter.get_position()):
+                if trap.get_position().equals(hunter.get_position()):
                     color = Color(255, 0, 0)
-                    k.set_color(color)
-                    if k.get_damage != 0:
-                        banner.set_text('You took damage from a trap')
-                        k.set_damage(50)
-                        hp = -50
-                        health.add_health(hp)
+                    trap.set_color(color)
+                    damage = trap.get_damage()
+                    if damage != 0:
+                        banner.set_message('You took damage from a trap')
+                        if hunter.get_player_number() == 1:
+                            banner.set_trap_damage1(damage)
+                        elif hunter.get_player_number() == 2:
+                            banner.set_trap_damage2(damage)
+                        banner.display_banner()
+                        trap.set_damage(0)
                         self._message_counter += 1
-                    elif k.get_damage == 0:
-                        banner.set_text('This trap has been activated already')
+                    elif damage == 0:
+                        banner.set_message('This trap has been activated already')
+                        banner.display_banner()
                         self._message_counter += 1
 
 
@@ -119,13 +139,28 @@ class HandleCollisionsAction(Action):
         Args:
             cast (Cast): The cast of Actors in the game.
         """
+        banner = cast.get_first_actor("banners")
+        health1 = banner.get_health1()
+        health2 = banner.get_health2()
+        ground_covers = cast.get_actors("ground_covers")
+
+        if self._treasures_found == DEFAULT_TREASURES:
+            self._is_game_over = True
+        elif health1 <= 0:
+            self._is_game_over = True
+        elif health2 <= 0:
+            self._is_game_over = True
 
         if self._is_game_over:
-            hunter = cast.get_first_actor("Hunter")
-            score = cast.get_first_actor("score")
 
-
+            x = int(constants.MAX_X / 2)
+            y = int(constants.MAX_Y / 2)
+            position = Point(x, y)
 
             message = Actor()
-            message.set_text(f"Game Over!")
+            message.set_text("Game Over!")
+            message.set_position(position)
             cast.add_actor("messages", message)
+
+            for ground_cover in ground_covers:
+                ground_cover.set_color(WHITE)
