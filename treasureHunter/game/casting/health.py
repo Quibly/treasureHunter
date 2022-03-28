@@ -17,7 +17,7 @@ class Health(Actor):
     def __init__(self):
         super().__init__()
         self._health = 100
-        self.add_health(100)
+        self.add_health(0)
         self._position = (Point(0,15))
 
     def add_health(self, health):
@@ -26,4 +26,5 @@ class Health(Actor):
         Args:
             points (int): The points to add.
         """
+        self._health += health
         self.set_text(f"Health: {self._health}")

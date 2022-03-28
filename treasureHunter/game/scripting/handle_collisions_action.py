@@ -68,6 +68,7 @@ class HandleCollisionsAction(Action):
         hunters = cast.get_actors("hunters")
         banner = cast.get_first_actor("banners")
         treasures = cast.get_actors("treasures")
+        score = cast.get_first_actor("score")
 
 
         for j in treasures:
@@ -79,7 +80,7 @@ class HandleCollisionsAction(Action):
                     message = j.get_message()
                     banner.set_text(message)
                     self._current_score += 1
-                    j.set_value(0)
+                    score.add_points(self._current_score)
                     self._message_counter += 1
 
 
@@ -92,6 +93,7 @@ class HandleCollisionsAction(Action):
         hunters = cast.get_actors("hunters")
         banner = cast.get_first_actor("banners")
         traps = cast.get_actors("traps")
+        health = cast.get_first_actor("health")
 
         for k in traps:
             for hunter in hunters:
@@ -102,8 +104,8 @@ class HandleCollisionsAction(Action):
                     if k.get_damage != 0:
                         banner.set_text('You took damage from a trap')
                         k.set_damage(50)
-                        if Hunter.health == 0:
-                            self._is_game_over = True
+                        hp = -50
+                        health.add_health(hp)
                         self._message_counter += 1
                     elif k.get_damage == 0:
                         banner.set_text('This trap has been activated already')
