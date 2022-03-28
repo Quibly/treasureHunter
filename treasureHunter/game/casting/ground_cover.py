@@ -1,4 +1,3 @@
-from turtle import position
 from game.casting.actor import Actor
 import constants
 import random
@@ -46,4 +45,3 @@ class Ground_Cover(Actor):
         self.set_position(position)
         self.set_font_size(constants.FONT_SIZE)
         self.set_color(constants.TAN)
-
