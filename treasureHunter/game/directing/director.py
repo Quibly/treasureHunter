@@ -1,5 +1,3 @@
-from game.shared.color import Color
-
 class Director:
     """A person who directs the game.
 
