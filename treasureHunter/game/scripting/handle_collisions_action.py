@@ -5,13 +5,15 @@ from game.shared.point import Point
 from game.shared.color import Color
 from constants import DEFAULT_TREASURES
 from constants import WHITE
+from constants import YELLOW
+from constants import GREEN
 
 class HandleCollisionsAction(Action):
     """
     An update action that handles interactions between the actors.
     
-    The responsibility of HandleCollisionsAction is to handle the situation when the cycle collides
-    with another cycle, or the cycle collides with its trails, or the game is over.
+    The responsibility of HandleCollisionsAction is to handle the situation when the hunter collides
+    with a treasure or trap, or if the game is over.
 
     Attributes:
         _is_game_over (boolean): Whether or not the game is over.
@@ -67,7 +69,7 @@ class HandleCollisionsAction(Action):
                   
         
     def _handle_treasure_collision(self, cast):
-        """Sets the game over flag if the cycle collides with one of its or another players trail.
+        """Sets the game over flag if the hunter collides with a treasure or trap.
         
         Args:
             cast (Cast): The cast of Actors in the game.
@@ -82,7 +84,7 @@ class HandleCollisionsAction(Action):
                 #show treasure and increase score of hunter if collision is found
                 if treasure.get_position().equals(hunter.get_position()):
                     color = Color(255, 255, 255)
-                    treasure.set_color(color)
+                    treasure.set_color(GREEN)
                     message = treasure.get_message()
                     points = treasure.get_value()
                     banner.set_message(message)
@@ -134,7 +136,7 @@ class HandleCollisionsAction(Action):
 
         
     def _handle_game_over(self, cast):
-        """Shows the 'game over' message and turns the cycles to white if the game is over.
+        """Shows the 'game over' message and turns the baord to white if the game is over.
         
         Args:
             cast (Cast): The cast of Actors in the game.
@@ -153,11 +155,12 @@ class HandleCollisionsAction(Action):
 
         if self._is_game_over:
 
-            x = int(constants.MAX_X / 2)
-            y = int(constants.MAX_Y / 2)
+            x = 600 #int(constants.MAX_X / 2)
+            y = 30 #int(constants.MAX_Y / 2)
             position = Point(x, y)
 
             message = Actor()
+            message.set_color(YELLOW)
             message.set_text("Game Over!")
             message.set_position(position)
             cast.add_actor("messages", message)
