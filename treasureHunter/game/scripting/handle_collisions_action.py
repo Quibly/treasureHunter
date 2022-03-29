@@ -7,6 +7,7 @@ from constants import DEFAULT_TREASURES
 from constants import WHITE
 from constants import YELLOW
 from constants import GREEN
+from constants import RED
 
 class HandleCollisionsAction(Action):
     """
@@ -83,7 +84,6 @@ class HandleCollisionsAction(Action):
             for hunter in hunters:
                 #show treasure and increase score of hunter if collision is found
                 if treasure.get_position().equals(hunter.get_position()):
-                    color = Color(255, 255, 255)
                     treasure.set_color(GREEN)
                     message = treasure.get_message()
                     points = treasure.get_value()
@@ -116,8 +116,7 @@ class HandleCollisionsAction(Action):
             for hunter in hunters:
                 #show trap and decrease hunter health if collision is found
                 if trap.get_position().equals(hunter.get_position()):
-                    color = Color(255, 0, 0)
-                    trap.set_color(color)
+                    trap.set_color(RED)
                     damage = trap.get_damage()
                     if damage != 0:
                         banner.set_message('You took damage from a trap')
