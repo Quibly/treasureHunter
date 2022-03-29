@@ -10,11 +10,13 @@ class Hunter(Actor):
     The responsibility of a Hunter is to house health, scoring, and controls for the player hunters.
 
     Attributes:
-        _health(int): The amount of damage a player takes if they contact this trap.
+        _player_number(int): Holds the player number value.
+        _prepare_hunter(player_number) (function): A function that takes the player_number as input
+            and creates the initial attributes of the hunter object. 
     """
     def __init__(self, player_number):
         """
-        Holds the damage amount from the trap
+        Creates the hunter objects and holds the player_number value.
         """
         super().__init__()
         self._player_number = 1
@@ -22,16 +24,23 @@ class Hunter(Actor):
 
     def get_player_number(self):
         """
+        Gets the player number value for the hunter object.
+
+        Returns: 
+            The player number.
         """
         return self._player_number
     
     def set_player_number(self, player_number):
         """
+        Sets the player number for the hunter object.
         """
         self._player_number = player_number
 
     def _prepare_hunter(self, player_number):
         """
+        A function that constructs the initial values for the hunter object attributes.
+        It receives the player number and creates the hunter accordingly.
         """
         if player_number == 1:
             x = int(constants.MAX_X / 4)
