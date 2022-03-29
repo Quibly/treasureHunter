@@ -1,6 +1,10 @@
 from game.shared.color import Color
 import os
 
+"""
+Constant settings for the program funcionality.
+"""
+
 FRAME_RATE = 12
 BANNER_HEIGHT = 4
 CELL_SIZE = 15
