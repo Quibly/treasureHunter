@@ -11,33 +11,35 @@ class Trap(Actor):
 
     Attributes:
         _damage(int): The amount of damage a player takes if they contact this trap.
+        _prepare_trap() (function): The function constructs the initial attributes of the trap.
     """
     def __init__(self):
         """
-        Holds the damage amount from the trap
+        Holds the damage amount from the trap and creates a new trap object.
         """
         super().__init__()
         self._damage = 50
         self._prepare_trap()
 
     def get_damage(self):
-        """Returns the damage amount of the trap.
+        """
+        Gets the damage amount of the trap.
         
-        Args:
-            _damage(int): The amount of damage a player takes if they contact this trap.
+        Returns:
+            The damage value of the trap.
         """
         return self._damage
 
     def set_damage(self, damage):
-        """Updates the damage amount from contacting the trap.
-        
-        Args:
-            _damage(int): The amount of damage a player takes if they contact this trap.
+        """
+        Sets the damage amount from contacting the trap.
         """
         self._damage = damage
 
     def _prepare_trap(self):
         """
+        A function that prepares the intial attributes of the trap object.
+        This sets the text, font size, color, position, and damage value for the trap.
         """
         text = "O"
 
