@@ -47,6 +47,10 @@ class HandleCollisionsAction(Action):
 
     def get_game_over(self):
         """
+        Gets the _is_game_over variable.
+
+        Returns:
+            The _is_game_over value.
         """
         return self._is_game_over
     
@@ -135,7 +139,7 @@ class HandleCollisionsAction(Action):
 
         
     def _handle_game_over(self, cast):
-        """Shows the 'game over' message and turns the baord to white if the game is over.
+        """Shows the 'game over' message and turns the board to white if the game is over.
         
         Args:
             cast (Cast): The cast of Actors in the game.
