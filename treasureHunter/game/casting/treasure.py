@@ -14,11 +14,11 @@ class Treasure(Actor):
     Attributes:
         _message (string): A short description about the treasure.
         _value(integer): The given value.
+        _prepare_treasure() (function): A function that controls the intial attribute creations of the treasure object.
     """
     def __init__(self):
         """
-        _message(string): details for gameplay.
-        _value(integer): The given value.
+        Creates the treasure object and holds the value and message variables.
         """
         super().__init__()
         self._message = ""
@@ -26,7 +26,8 @@ class Treasure(Actor):
         self._prepare_treasure()
                 
     def get_message(self):
-        """Gets the treasure's message.
+        """
+        Gets the treasure's message.
         
         Returns:
             string: The message.
@@ -34,7 +35,8 @@ class Treasure(Actor):
         return self._message
     
     def set_message(self, message):
-        """Updates the message to the given one.
+        """
+        Updates the message to the given one.
         
         Args:
             message (string): The given message.
@@ -42,7 +44,8 @@ class Treasure(Actor):
         self._message = message
 
     def get_value(self):
-        """Gets the treasure value.
+        """
+        Gets the treasure value.
         
         Returns:
             integer: The value of the treasure.
@@ -51,7 +54,8 @@ class Treasure(Actor):
         return value
 
     def set_value(self, value):
-        """Updates the value to the given one.
+        """
+        Updates the value to the given one.
         
         Args:
             _value(integer): The given value.
@@ -60,6 +64,9 @@ class Treasure(Actor):
 
     def _prepare_treasure(self):
         """
+        A function that creates the intial attributes for the treasure object.
+        This function pulls messages from the data file and assigns them to the treasure objects
+        with text, font size, color, position, and value.
         """
         with open(constants.DATA_PATH) as file:
             data = file.read()
