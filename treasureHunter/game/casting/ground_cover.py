@@ -4,18 +4,20 @@ import random
 
 class Ground_Cover(Actor):
     """
-    An item of cultural or historical interest. 
-    
-    The responsibility of an Artifact is to provide a message about itself.
+    An object for covering the traps and treasures hiding in the game field.
+
+    Creates objects that represent ground cover for the game.
 
     Attributes:
         _display_toggle(int): Controls the display of ground cover:
-        A display toggle of 0 = no display.
-        A display toggle of 1 = display. (Default)
+            A display toggle of 0 = no display.
+            A display toggle of 1 = display. (Default)
+        _prepare_ground_cover() (function): A function to define the initial creation of ground cover.
     """
     def __init__(self, position):
         """
-        Sets a default display toggle variable for ground cover.
+        Sets a default display toggle variable for ground cover
+        and creates the initial attributes of the ground cover objects.
     
         """
         super().__init__()
@@ -40,6 +42,10 @@ class Ground_Cover(Actor):
         self._display_toggle = display_toggle
 
     def _prepare_ground_cover(self, position):
+        """
+        A function to create the initial settings for the ground cover objects.
+        The function adds text, color, position, and font_size for objects.
+        """
         text = chr(random.randint(33, 126))
         self.set_text(text)
         self.set_position(position)
